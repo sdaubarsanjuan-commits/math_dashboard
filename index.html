@@ -554,7 +554,55 @@
       <div class="badge-sub">AP · IB · Honors</div>
     </div>
   </div>
+
+  <!-- Math graphics SVG -->
+  <svg class="math-bg-svg" viewBox="0 0 1240 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+    <!-- Sine wave -->
+    <path d="M0,90 C30,40 60,140 90,90 C120,40 150,140 180,90 C210,40 240,140 270,90 C300,40 330,140 360,90 C390,40 420,140 450,90 C480,40 510,140 540,90 C570,40 600,140 630,90" stroke="rgba(201,168,76,0.25)" stroke-width="2" fill="none"/>
+    <!-- Coordinate axes -->
+    <line x1="680" y1="20" x2="680" y2="160" stroke="rgba(14,138,138,0.3)" stroke-width="1.5"/>
+    <line x1="640" y1="90" x2="820" y2="90" stroke="rgba(14,138,138,0.3)" stroke-width="1.5"/>
+    <!-- Parabola on axes -->
+    <path d="M660,155 Q680,30 700,155" stroke="rgba(201,168,76,0.35)" stroke-width="2" fill="none"/>
+    <!-- Axis arrows -->
+    <polygon points="680,16 676,26 684,26" fill="rgba(14,138,138,0.3)"/>
+    <polygon points="824,90 814,86 814,94" fill="rgba(14,138,138,0.3)"/>
+    <!-- Math symbols -->
+    <text x="860" y="60" font-family="Georgia,serif" font-size="28" fill="rgba(201,168,76,0.22)" transform="rotate(-8,860,60)">∫</text>
+    <text x="910" y="100" font-family="Georgia,serif" font-size="22" fill="rgba(255,255,255,0.1)">π</text>
+    <text x="950" y="55" font-family="Georgia,serif" font-size="18" fill="rgba(14,138,138,0.22)">Σ</text>
+    <text x="990" y="120" font-family="Georgia,serif" font-size="20" fill="rgba(201,168,76,0.18)" transform="rotate(5,990,120)">√x</text>
+    <text x="1040" y="70" font-family="Georgia,serif" font-size="16" fill="rgba(255,255,255,0.09)">dy/dx</text>
+    <text x="1090" y="130" font-family="Georgia,serif" font-size="22" fill="rgba(14,138,138,0.18)">θ</text>
+    <text x="1130" y="80" font-family="Georgia,serif" font-size="15" fill="rgba(201,168,76,0.2)">lim</text>
+    <text x="1170" y="110" font-family="Georgia,serif" font-size="18" fill="rgba(255,255,255,0.08)">∞</text>
+    <!-- Small grid dots -->
+    <circle cx="750" cy="50" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="750" cy="70" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="750" cy="110" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="750" cy="130" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="770" cy="50" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="770" cy="70" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="770" cy="110" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="770" cy="130" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="790" cy="50" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="790" cy="70" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="790" cy="110" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="790" cy="130" r="1.5" fill="rgba(255,255,255,0.12)"/>
+    <!-- f(x) label on parabola -->
+    <text x="704" y="148" font-family="Georgia,serif" font-size="11" fill="rgba(201,168,76,0.4)" font-style="italic">f(x)=x²</text>
+  </svg>
 </header>
+
+<style>
+  .math-bg-svg {
+    display: block;
+    width: 100%;
+    height: 90px;
+    margin-top: -10px;
+    opacity: 0.9;
+  }
+</style>
 
 <!-- NAV -->
 <nav class="nav-band">
@@ -601,7 +649,7 @@
       </div>
     </div>
 
-    <div class="card-grid">
+    <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
 
       <a href="https://go.gale.com/ps/start.do?p=SCIC&u=gullprep" target="_blank" class="card card-navy">
         <div class="card-header">
@@ -618,32 +666,17 @@
         </div>
       </a>
 
-      <a href="https://school.eb.com/levels/high" target="_blank" class="card card-navy">
+      <a href="https://gulliverschools.libguides.com/statista" target="_blank" class="card card-navy">
         <div class="card-header">
-          <div class="card-emoji">🌐</div>
+          <div class="card-emoji">📊</div>
           <div>
-            <div class="card-title">Encyclopedia Britannica</div>
-            <span class="card-tag tag-navy">Britannica · Reference</span>
+            <div class="card-title">Statista</div>
+            <span class="card-tag tag-navy">Statista · Data & Statistics</span>
           </div>
         </div>
-        <p class="card-desc">Premium encyclopedia with authoritative articles on mathematics history, foundational concepts, famous mathematicians, and real-world math applications. Useful for cross-curricular projects and research papers.</p>
+        <p class="card-desc">Leading statistics portal with data on over 80,000 topics from 22,500+ sources. Invaluable for real-world data sets in statistics and pre-calculus courses, and for IB Mathematical Studies and AP Statistics projects requiring authentic data.</p>
         <div class="card-footer">
-          <span class="card-courses">All Courses · Research Papers</span>
-          <span class="card-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="https://www.ebsco.com/research-starters" target="_blank" class="card card-navy">
-        <div class="card-header">
-          <div class="card-emoji">🏛️</div>
-          <div>
-            <div class="card-title">Research Starters</div>
-            <span class="card-tag tag-navy">EBSCO · Reference</span>
-          </div>
-        </div>
-        <p class="card-desc">EBSCO's Research Starters provide authoritative overviews on thousands of topics including mathematics, statistics, and STEM fields. Ideal as a starting point for student research and teacher content background reading.</p>
-        <div class="card-footer">
-          <span class="card-courses">All Courses · Research Foundation</span>
+          <span class="card-courses">Statistics · IB Math AI · AP Stats</span>
           <span class="card-arrow">→</span>
         </div>
       </a>
