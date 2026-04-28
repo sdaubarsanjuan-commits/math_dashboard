@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gulliver Schools — Mathematics Teacher Resource Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #003057;
+    --navy-light: #004a8f;
+    --navy-dark: #001e38;
+    --gold: #C9A84C;
+    --gold-light: #e8c878;
+    --gold-pale: #f5e9c8;
+    --teal: #0e8a8a;
+    --teal-light: #14b8b8;
+    --cream: #faf8f3;
+    --white: #ffffff;
+    --text-dark: #1a2332;
+    --text-mid: #3a4a5c;
+    --text-light: #7a8a9a;
+    --border: #dde4ed;
+    --shadow-sm: 0 2px 8px rgba(0,48,87,0.08);
+    --shadow-md: 0 6px 24px rgba(0,48,87,0.12);
+    --shadow-lg: 0 16px 48px rgba(0,48,87,0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  header {
+    background: var(--navy-dark);
+    background-image: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(14,138,138,0.10) 0%, transparent 50%),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.015) 60px,
+        rgba(255,255,255,0.015) 61px
+      );
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    position: relative;
+    z-index: 1;
+  }
+
+  .school-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .school-label::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  h1 span {
+    color: var(--gold);
+  }
+
+  .header-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    margin-top: 10px;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  .header-badge {
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .header-badge .badge-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 6px;
+  }
+  .header-badge .badge-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .header-badge .badge-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+
+  /* ── NAV BAND ────────────────────────────────────────────── */
+  .nav-band {
+    background: var(--navy);
+    border-bottom: 3px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-inner a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 20px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-inner a:hover {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold-light);
+  }
+  .nav-inner a .nav-icon { font-size: 15px; }
+
+  /* ── MAIN ────────────────────────────────────────────────── */
+  main {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* ── SECTION HEADERS ─────────────────────────────────────── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-navy { background: var(--navy); color: var(--gold); }
+  .icon-teal { background: var(--teal); color: white; }
+  .icon-gold { background: var(--gold); color: var(--navy); }
+
+  .section-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    flex: 1;
+  }
+  .section-head .section-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 300;
+    margin-top: 2px;
+    max-width: 480px;
+    text-align: right;
+  }
+
+  section { margin-bottom: 60px; }
+
+  /* ── ALERT BANNER ────────────────────────────────────────── */
+  .alert-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-left: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-md);
+  }
+  .alert-banner .alert-icon { font-size: 24px; flex-shrink: 0; }
+  .alert-banner .alert-text { flex: 1; }
+  .alert-banner .alert-text p {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+  .alert-banner .alert-text strong {
+    color: var(--gold-light);
+    font-size: 15px;
+  }
+  .alert-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy-dark);
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+  .alert-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── GRID CARDS ──────────────────────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: rgba(0,48,87,0.2);
+  }
+  .card:hover::after { transform: scaleX(1); }
+
+  .card.card-gold::after { background: var(--gold); }
+  .card.card-teal::after { background: var(--teal); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-emoji {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: var(--cream);
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  .tag-navy { background: rgba(0,48,87,0.08); color: var(--navy); }
+  .tag-teal { background: rgba(14,138,138,0.1); color: var(--teal); }
+  .tag-gold { background: rgba(201,168,76,0.15); color: #8a6a00; }
+  .tag-gray { background: rgba(0,0,0,0.05); color: var(--text-mid); }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    flex: 1;
+    font-weight: 300;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .card-courses {
+    font-size: 11px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .card-arrow {
+    font-size: 14px;
+    color: var(--navy);
+    opacity: 0.4;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+
+  /* ── COURSE TAGS ROW ─────────────────────────────────────── */
+  .course-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 28px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 13px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: 1.5px solid transparent;
+    cursor: default;
+    user-select: none;
+  }
+  .pill-navy { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+  .pill-outline { background: transparent; color: var(--navy); border-color: var(--navy); }
+  .pill-teal { background: rgba(14,138,138,0.1); color: var(--teal); border-color: rgba(14,138,138,0.25); }
+
+  /* ── WIDE CARD ───────────────────────────────────────────── */
+  .wide-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sm);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .wide-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--gold);
+  }
+  .wide-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .wide-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .wide-card p {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .wide-card .wc-meta {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+  }
+  .wc-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ── HIGHLIGHT BOX ───────────────────────────────────────── */
+  .highlight-box {
+    background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f8 100%);
+    border: 1px solid rgba(0,48,87,0.12);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .highlight-box .hb-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .highlight-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .highlight-box p {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+  .highlight-box a {
+    color: var(--navy-light);
+    font-weight: 500;
+  }
+
+  /* ── DIVIDER ─────────────────────────────────────────────── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 28px;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────────── */
+  footer {
+    background: var(--navy-dark);
+    padding: 32px;
+    text-align: center;
+  }
+  footer p {
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .header-inner { grid-template-columns: 1fr; }
+    .header-badge { display: none; }
+    main { padding: 32px 20px 60px; }
+    .wide-card { grid-template-columns: 1fr; }
+    .section-head { flex-wrap: wrap; }
+    .section-desc { text-align: left !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="school-label">Gulliver Schools · Library & Digital Resources</div>
+      <h1>Mathematics<br><span>Teacher Dashboard</span></h1>
+      <p class="header-sub">Curated databases, tools & digital resources · Algebra through AP Calculus BC & IB Mathematics</p>
+    </div>
+    <div class="header-badge">
+      <div class="badge-label">Courses Covered</div>
+      <div class="badge-val">Alg → Calc</div>
+      <div class="badge-sub">AP · IB · Honors</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-band">
+  <div class="nav-inner">
+    <a href="#databases"><span class="nav-icon">🗄️</span> Gulliver Databases</a>
+    <a href="#graphing"><span class="nav-icon">📐</span> Graphing & CAS</a>
+    <a href="#curriculum"><span class="nav-icon">📚</span> Curriculum</a>
+    <a href="#practice"><span class="nav-icon">✏️</span> Practice & Assessment</a>
+    <a href="#ap-ib"><span class="nav-icon">🎓</span> AP & IB</a>
+    <a href="#professional"><span class="nav-icon">🔬</span> Professional Dev</a>
+    <a href="#video"><span class="nav-icon">▶️</span> Video Resources</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ALERT BANNER -->
+  <div class="alert-banner">
+    <div class="alert-icon">🏫</div>
+    <div class="alert-text">
+      <strong>Gulliver Schools Library Databases — Full A–Z List</strong>
+      <p>Access the complete list of all licensed databases available to Gulliver faculty and students. Login credentials are listed under each database. Contact the library for access support.</p>
+    </div>
+    <a href="https://gulliverschools.libguides.com/az/databases" target="_blank" class="alert-btn">
+      Open Database Portal →
+    </a>
+  </div>
+
+  <!-- ── SECTION 1: GULLIVER DATABASES ── -->
+  <section id="databases">
+    <div class="section-head">
+      <div class="section-icon icon-navy">🗄️</div>
+      <div style="flex:1">
+        <h2>Gulliver Library Databases — Math Relevant</h2>
+        <div class="section-desc">Databases with mathematics, STEM, and educational research content</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="hb-icon">🔐</div>
+      <div>
+        <h4>Access Note</h4>
+        <p>All databases below are available through the <a href="https://gulliverschools.libguides.com/az/databases" target="_blank">Gulliver A–Z Database Portal</a>. Usernames and passwords are listed under each database's "Additional Info" tab. Contact the Gulliver library at <strong>libguides.com</strong> for login support.</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://go.gale.com/ps/start.do?p=SCIC&u=gullprep" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🔬</div>
+          <div>
+            <div class="card-title">Gale Science In Context</div>
+            <span class="card-tag tag-navy">Gale · Full Text</span>
+          </div>
+        </div>
+        <p class="card-desc">Integrates science and math reference content with articles, experiments, and data visualizations. Covers mathematics and technology alongside biology, chemistry, and physics. Includes Khan Academy videos and NASA content.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra II · Pre-Calc · Statistics</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://school.eb.com/levels/high" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🌐</div>
+          <div>
+            <div class="card-title">Encyclopedia Britannica</div>
+            <span class="card-tag tag-navy">Britannica · Reference</span>
+          </div>
+        </div>
+        <p class="card-desc">Premium encyclopedia with authoritative articles on mathematics history, foundational concepts, famous mathematicians, and real-world math applications. Useful for cross-curricular projects and research papers.</p>
+        <div class="card-footer">
+          <span class="card-courses">All Courses · Research Papers</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.ebsco.com/research-starters" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🏛️</div>
+          <div>
+            <div class="card-title">Research Starters</div>
+            <span class="card-tag tag-navy">EBSCO · Reference</span>
+          </div>
+        </div>
+        <p class="card-desc">EBSCO's Research Starters provide authoritative overviews on thousands of topics including mathematics, statistics, and STEM fields. Ideal as a starting point for student research and teacher content background reading.</p>
+        <div class="card-footer">
+          <span class="card-courses">All Courses · Research Foundation</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://eric.ed.gov/" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🎓</div>
+          <div>
+            <div class="card-title">ERIC — Education Resources</div>
+            <span class="card-tag tag-navy">Dept of Education · Free</span>
+          </div>
+        </div>
+        <p class="card-desc">Education Resources Information Center — the nation's largest education database. Search hundreds of thousands of math education journal articles, lesson plans, curriculum guides, and research on math teaching strategies for grades 9–12.</p>
+        <div class="card-footer">
+          <span class="card-courses">Pedagogy · Curriculum Research</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="highlight-box" style="margin-top:20px;">
+      <div class="hb-icon">💡</div>
+      <div>
+        <h4>Using Databases for Math Class</h4>
+        <p>Search Gale Science in Context and Research Starters using terms like <em>"calculus applications," "mathematical modeling," "statistics real world,"</em> or <em>"mathematics careers"</em> to find articles that connect classroom content to authentic contexts — great for IB Internal Assessments or AP research components.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-label">Open Digital Resources</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ── SECTION 2: GRAPHING & CAS ── -->
+  <section id="graphing">
+    <div class="section-head">
+      <div class="section-icon icon-teal">📐</div>
+      <div style="flex:1">
+        <h2>Graphing, CAS & Visualization Tools</h2>
+        <div class="section-desc">Interactive tools for exploration, demonstration & student investigation</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://www.desmos.com/calculator" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">📈</div>
+          <div>
+            <div class="card-title">Desmos Graphing Calculator</div>
+            <span class="card-tag tag-teal">Free · Browser-based</span>
+          </div>
+        </div>
+        <p class="card-desc">The gold standard for classroom graphing. Beautiful, intuitive interface for functions, inequalities, parametric curves, polar graphs, and regressions. Use the Teacher Activity Builder to create custom interactive lessons.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra · Pre-Calc · AP Calc · IB Math</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://teacher.desmos.com/" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">🧑‍🏫</div>
+          <div>
+            <div class="card-title">Desmos Classroom Activities</div>
+            <span class="card-tag tag-teal">Free · Teacher Platform</span>
+          </div>
+        </div>
+        <p class="card-desc">Hundreds of ready-to-use interactive activities built by teachers. Assign activities, monitor student work in real time, and pause/pace the class. Fully aligned to Algebra through Calculus standards.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra I/II · Pre-Calc · Geometry</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.geogebra.org/classic" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">📐</div>
+          <div>
+            <div class="card-title">GeoGebra Classic</div>
+            <span class="card-tag tag-teal">Free · Geometry + CAS</span>
+          </div>
+        </div>
+        <p class="card-desc">Combines geometry, algebra, spreadsheets, graphing, statistics and calculus in one package. Ideal for IB and AP explorations. The 3D Graphing view and CAS module are particularly powerful for advanced courses.</p>
+        <div class="card-footer">
+          <span class="card-courses">Geometry · AP Calc · IB Math HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.wolframalpha.com/" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">🔢</div>
+          <div>
+            <div class="card-title">Wolfram Alpha</div>
+            <span class="card-tag tag-teal">Free · Computational Engine</span>
+          </div>
+        </div>
+        <p class="card-desc">Solves any math problem with step-by-step explanations. Covers limits, derivatives, integrals, series, matrices, statistics, and more. A must-have teacher tool for generating worked examples and checking answers.</p>
+        <div class="card-footer">
+          <span class="card-courses">Pre-Calc · AP Calc BC · IB Math</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://phet.colorado.edu/en/simulations/filter?subjects=math" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">⚗️</div>
+          <div>
+            <div class="card-title">PhET Math Simulations</div>
+            <span class="card-tag tag-teal">Free · CU Boulder</span>
+          </div>
+        </div>
+        <p class="card-desc">University of Colorado's research-based interactive simulations for mathematics. Excellent for visual learners — explore function concepts, area models, graphing, and number sense through hands-on digital manipulatives.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra I/II · Pre-Calc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://mathworld.wolfram.com/" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">📙</div>
+          <div>
+            <div class="card-title">Wolfram MathWorld</div>
+            <span class="card-tag tag-teal">Free · Reference</span>
+          </div>
+        </div>
+        <p class="card-desc">The web's most comprehensive math encyclopedia — over 13,000 entries with definitions, theorems, proofs, and formulas. Perfect teacher reference for content prep and verifying mathematical definitions across all HS topics.</p>
+        <div class="card-footer">
+          <span class="card-courses">All Courses · Teacher Reference</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: CURRICULUM ── -->
+  <section id="curriculum">
+    <div class="section-head">
+      <div class="section-icon icon-gold">📚</div>
+      <div style="flex:1">
+        <h2>Curriculum & Lesson Planning</h2>
+        <div class="section-desc">Lesson plans, units, and standards-aligned curriculum resources</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://mathmedic.com/" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🩺</div>
+          <div>
+            <div class="card-title">Math Medic</div>
+            <span class="card-tag tag-gold">Free · Full Curriculum</span>
+          </div>
+        </div>
+        <p class="card-desc">Free daily lesson plans for all high school math courses built on the "Experience First, Formalize Later" (EFFL) model. Trusted by 100,000+ teachers. Covers Algebra I through AP Calculus AB/BC and AP Statistics.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → AP Calc AB/BC · AP Stats</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://im.kendallhunt.com/" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🧮</div>
+          <div>
+            <div class="card-title">Illustrative Mathematics (IM)</div>
+            <span class="card-tag tag-gold">Free · Problem-Based</span>
+          </div>
+        </div>
+        <p class="card-desc">Coherent, rigorous, problem-based curriculum for grades 6–12. Fully aligned to CCSS. Each lesson opens with a rich task and builds to formal understanding — excellent model for AP and IB-style instruction.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra I/II · Geometry · Pre-Calc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.illuminations.nctm.org/" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">💡</div>
+          <div>
+            <div class="card-title">NCTM Illuminations</div>
+            <span class="card-tag tag-gold">Free · NCTM</span>
+          </div>
+        </div>
+        <p class="card-desc">Classroom-ready lessons and interactive tools from the National Council of Teachers of Mathematics. Activities are aligned to NCTM standards and cover the full HS math curriculum with rich investigative tasks.</p>
+        <div class="card-footer">
+          <span class="card-courses">All HS Math Courses</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.khanacademy.org/math" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🎯</div>
+          <div>
+            <div class="card-title">Khan Academy — Math</div>
+            <span class="card-tag tag-gold">Free · Adaptive</span>
+          </div>
+        </div>
+        <p class="card-desc">Free mastery-based instruction from Algebra I through AP Calculus BC and AP Statistics. Teacher dashboards allow assignment of specific skills and monitoring of student progress. Official College Board partner for SAT prep.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → AP Calc BC · AP Stats · SAT</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.nctm.org/classroomresources/" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">📐</div>
+          <div>
+            <div class="card-title">NCTM Classroom Resources</div>
+            <span class="card-tag tag-gold">Member Resource</span>
+          </div>
+        </div>
+        <p class="card-desc">The National Council of Teachers of Mathematics provides vetted problems of the week, classroom activities, journal articles, and professional learning resources. Essential for staying current on math education research.</p>
+        <div class="card-footer">
+          <span class="card-courses">All Courses · PD</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.achievethecore.org/category/854/mathematics-lessons" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🎯</div>
+          <div>
+            <div class="card-title">Achieve the Core</div>
+            <span class="card-tag tag-gold">Free · Standards-Aligned</span>
+          </div>
+        </div>
+        <p class="card-desc">Standards-aligned lesson resources and the Coherence Map — an interactive tool showing how every math standard connects to prerequisite and successor standards. Excellent for IB and AP curriculum planning.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → Pre-Calc · Curriculum Planning</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: PRACTICE & ASSESSMENT ── -->
+  <section id="practice">
+    <div class="section-head">
+      <div class="section-icon icon-navy">✏️</div>
+      <div style="flex:1">
+        <h2>Practice, Assessment & Student Engagement</h2>
+        <div class="section-desc">Formative tools, skill-building platforms and interactive review</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://www.deltamath.com/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">Δ</div>
+          <div>
+            <div class="card-title">DeltaMath</div>
+            <span class="card-tag tag-navy">Free · HS Focused</span>
+          </div>
+        </div>
+        <p class="card-desc">Built specifically for middle and high school math. Unlimited practice with instant feedback and hints. Assign problem sets by topic, track class performance, and use for homework or remediation. Widely regarded as the best free math practice tool.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → AP Calc BC</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://quizizz.com/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">🎮</div>
+          <div>
+            <div class="card-title">Quizizz</div>
+            <span class="card-tag tag-navy">Free · Gamified Review</span>
+          </div>
+        </div>
+        <p class="card-desc">Game-based formative assessment platform. Teachers create or import math quizzes; students compete in real time or asynchronously. Great for warm-ups, unit reviews, or AP/IB exam prep in an engaging format.</p>
+        <div class="card-footer">
+          <span class="card-courses">All HS Math · Exam Review</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.desmos.com/testing" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">🧪</div>
+          <div>
+            <div class="card-title">Desmos Test Mode</div>
+            <span class="card-tag tag-gray">Free · Digital Calculator</span>
+          </div>
+        </div>
+        <p class="card-desc">The official Desmos graphing calculator used on digital SAT, PSAT, AP Calculus, and IB exams. Familiarize students with the exact interface they'll use on high-stakes tests. Essential for AP and IB test preparation.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calc AB/BC · IB Math · SAT</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.artofproblemsolving.com/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">🏆</div>
+          <div>
+            <div class="card-title">Art of Problem Solving</div>
+            <span class="card-tag tag-gray">Free + Paid · Competition</span>
+          </div>
+        </div>
+        <p class="card-desc">Deep problem-solving resources, competition math archives (AMC, AIME, MATHCOUNTS), forums, and online courses. Invaluable for honors and IB students who need challenging beyond-curriculum problems.</p>
+        <div class="card-footer">
+          <span class="card-courses">Honors · IB Math · Competition</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.ixl.com/math/high-school" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">📊</div>
+          <div>
+            <div class="card-title">IXL Math — High School</div>
+            <span class="card-tag tag-gray">Paid · Adaptive</span>
+          </div>
+        </div>
+        <p class="card-desc">Adaptive mastery-based practice covering all HS math standards. Real-time diagnostic data helps teachers identify gaps. Strong coverage of Algebra I through Pre-Calculus with detailed teacher analytics.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra I/II · Geometry · Pre-Calc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://mathoverflow.net/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">❓</div>
+          <div>
+            <div class="card-title">Math Stack Exchange</div>
+            <span class="card-tag tag-gray">Free · Community Q&A</span>
+          </div>
+        </div>
+        <p class="card-desc">Professional mathematics Q&A community. Teacher resource for verifying rigorous proofs, finding elegant solutions to calculus problems, and exploring advanced topics beyond the textbook. Excellent for IB HL and AP Calc BC questions.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calc BC · IB Math HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 5: AP & IB ── -->
+  <section id="ap-ib">
+    <div class="section-head">
+      <div class="section-icon icon-teal">🎓</div>
+      <div style="flex:1">
+        <h2>AP & IB Mathematics Resources</h2>
+        <div class="section-desc">Official and supplementary resources for advanced courses</div>
+      </div>
+    </div>
+
+    <div class="course-pills">
+      <span class="pill pill-navy">AP Calculus AB</span>
+      <span class="pill pill-navy">AP Calculus BC</span>
+      <span class="pill pill-navy">AP Statistics</span>
+      <span class="pill pill-navy">AP Precalculus</span>
+      <span class="pill pill-outline">IB Math AA SL/HL</span>
+      <span class="pill pill-outline">IB Math AI SL/HL</span>
+      <span class="pill pill-teal">IB Internal Assessment</span>
+    </div>
+
+    <div class="card-grid-2">
+
+      <a href="https://apcentral.collegeboard.org/courses/ap-calculus-bc" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">📋</div>
+          <div>
+            <div class="card-title">College Board AP Calculus BC</div>
+            <span class="card-tag tag-navy">Official · College Board</span>
+          </div>
+        </div>
+        <p class="card-desc">Official AP Calculus BC course page with curriculum framework, free-response questions (all years), scoring guidelines, sample student responses, and professional development resources. The authoritative source for AP teachers.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calculus AB · AP Calculus BC</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://apcentral.collegeboard.org/courses/ap-calculus-ab" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">📋</div>
+          <div>
+            <div class="card-title">College Board AP Calculus AB</div>
+            <span class="card-tag tag-navy">Official · College Board</span>
+          </div>
+        </div>
+        <p class="card-desc">Full AP Calculus AB resources including the Course and Exam Description (CED), past free-response questions back to 1998, score distributions, and the AP Classroom digital platform for assigning practice.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calculus AB</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">🌍</div>
+          <div>
+            <div class="card-title">IB Mathematics — Official</div>
+            <span class="card-tag tag-teal">IB Organization</span>
+          </div>
+        </div>
+        <p class="card-desc">The International Baccalaureate's official mathematics programme page. Access the subject guide overview, assessment objectives, and descriptions of Analysis & Approaches vs Applications & Interpretation for SL and HL.</p>
+        <div class="card-footer">
+          <span class="card-courses">IB Math AA · IB Math AI · SL/HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://mathbitsnotebook.com/" target="_blank" class="card card-teal">
+        <div class="card-header">
+          <div class="card-emoji">📓</div>
+          <div>
+            <div class="card-title">MathBitsNotebook</div>
+            <span class="card-tag tag-teal">Free · HS & AP</span>
+          </div>
+        </div>
+        <p class="card-desc">Comprehensive notes, examples, and practice for Algebra I/II, Geometry, Pre-Calculus, and AP Calculus AB/BC. Organized by topic with clear, teacher-made content. Excellent for flipped classroom or student self-study.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → AP Calc AB/BC</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://tutorial.math.lamar.edu/" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">✍️</div>
+          <div>
+            <div class="card-title">Paul's Online Math Notes</div>
+            <span class="card-tag tag-gold">Free · Lamar University</span>
+          </div>
+        </div>
+        <p class="card-desc">Gold-standard written notes for Algebra, Calculus I–III, and Differential Equations. Loved by teachers for clean, rigorous explanations. Includes cheat sheets and practice problems with full solutions.</p>
+        <div class="card-footer">
+          <span class="card-courses">Pre-Calc · AP Calc AB/BC · IB HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.khanacademy.org/math/ap-calculus-bc" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🎯</div>
+          <div>
+            <div class="card-title">Khan Academy AP Calc BC</div>
+            <span class="card-tag tag-gold">Free · Official Partner</span>
+          </div>
+        </div>
+        <p class="card-desc">Khan Academy is an official College Board partner for AP Calculus. Full course coverage aligned to the AP CED with videos, practice exercises, and unit quizzes. Assign specific topics and track student mastery via the teacher dashboard.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calculus AB · AP Calculus BC</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: PROFESSIONAL DEV ── -->
+  <section id="professional">
+    <div class="section-head">
+      <div class="section-icon icon-navy">🔬</div>
+      <div style="flex:1">
+        <h2>Professional Development & Teacher Communities</h2>
+        <div class="section-desc">Stay current with research, pedagogy, and the math teaching community</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://www.nctm.org/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">📐</div>
+          <div>
+            <div class="card-title">NCTM — National Council of Teachers of Mathematics</div>
+            <span class="card-tag tag-navy">Professional Org</span>
+          </div>
+        </div>
+        <p class="card-desc">The leading professional organization for mathematics educators. Access publications, standards documents, conferences, webinars, and the Mathematics Teacher journal. Essential membership for any serious math educator.</p>
+        <div class="card-footer">
+          <span class="card-courses">All Courses · Professional Growth</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.nrich.maths.org/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">🧩</div>
+          <div>
+            <div class="card-title">NRICH — Cambridge University</div>
+            <span class="card-tag tag-teal">Free · Enrichment</span>
+          </div>
+        </div>
+        <p class="card-desc">Rich mathematical problems and articles from the University of Cambridge. Excellent for IB exploration tasks and enrichment for gifted students. Problems are categorized by topic and difficulty, with teacher guides.</p>
+        <div class="card-footer">
+          <span class="card-courses">Honors · IB Math · Enrichment</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://brilliant.org/" target="_blank" class="card">
+        <div class="card-header">
+          <div class="card-emoji">⚡</div>
+          <div>
+            <div class="card-title">Brilliant.org</div>
+            <span class="card-tag tag-gray">Free + Paid · Problem-Based</span>
+          </div>
+        </div>
+        <p class="card-desc">Problem-driven learning for mathematics, science, and CS. Exceptional for building mathematical intuition. Use as teacher professional development or assign specific problem sets to advanced students in IB or AP Calculus.</p>
+        <div class="card-footer">
+          <span class="card-courses">Pre-Calc · AP Calc · IB Math HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: VIDEO ── -->
+  <section id="video">
+    <div class="section-head">
+      <div class="section-icon icon-gold">▶️</div>
+      <div style="flex:1">
+        <h2>Video Resources & Lecture Series</h2>
+        <div class="section-desc">High-quality video instruction for classroom use and student self-study</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+
+      <a href="https://www.youtube.com/@3blue1brown" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🔵</div>
+          <div>
+            <div class="card-title">3Blue1Brown</div>
+            <span class="card-tag tag-gold">YouTube · Visual Intuition</span>
+          </div>
+        </div>
+        <p class="card-desc">Visually stunning math videos. The "Essence of Calculus" and "Essence of Linear Algebra" series build deep conceptual understanding — perfect for AP and IB students. Teachers use these for intuition-building before formal instruction.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calc AB/BC · IB Math · Pre-Calc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@ProfessorLeonard" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">🎬</div>
+          <div>
+            <div class="card-title">Professor Leonard</div>
+            <span class="card-tag tag-gold">YouTube · Full Lectures</span>
+          </div>
+        </div>
+        <p class="card-desc">Full university-length lecture series for Pre-Calculus, Calculus I, II, and III. Meticulous, clear instruction — the go-to resource for students who need a second explanation or teachers who want to see a topic taught a different way.</p>
+        <div class="card-footer">
+          <span class="card-courses">Pre-Calc · AP Calc AB/BC · IB HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@blackpenredpen" target="_blank" class="card card-gold">
+        <div class="card-header">
+          <div class="card-emoji">✒️</div>
+          <div>
+            <div class="card-title">blackpenredpen</div>
+            <span class="card-tag tag-gold">YouTube · Problem Solving</span>
+          </div>
+        </div>
+        <p class="card-desc">Engaging problem-solving videos focused on calculus techniques, integration, series, and differential equations. Great supplementary resource for AP Calculus BC students working on challenging free-response style problems.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calc BC · IB Math HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🏛️</div>
+          <div>
+            <div class="card-title">MIT OCW — Single Variable Calculus</div>
+            <span class="card-tag tag-navy">Free · MIT</span>
+          </div>
+        </div>
+        <p class="card-desc">MIT's full single-variable calculus course with lecture videos, notes, and problem sets — all free. Prof. David Jerison's lectures are exceptionally rigorous. Ideal teacher reference and enrichment for top IB and AP students.</p>
+        <div class="card-footer">
+          <span class="card-courses">AP Calc AB/BC · IB Math HL</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">🏛️</div>
+          <div>
+            <div class="card-title">MIT OCW — Multivariable Calculus</div>
+            <span class="card-tag tag-navy">Free · MIT</span>
+          </div>
+        </div>
+        <p class="card-desc">MIT's legendary multivariable calculus course for enrichment beyond AP Calc BC. Excellent teacher resource for deeper understanding of concepts like Green's theorem, curl, and divergence that underlie AP BC topics.</p>
+        <div class="card-footer">
+          <span class="card-courses">Post AP Calc BC · IB HL Enrichment</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@TheOrganicChemistryTutor/playlists" target="_blank" class="card card-navy">
+        <div class="card-header">
+          <div class="card-emoji">📺</div>
+          <div>
+            <div class="card-title">The Organic Chemistry Tutor — Math</div>
+            <span class="card-tag tag-navy">YouTube · All Topics</span>
+          </div>
+        </div>
+        <p class="card-desc">Despite the name, this channel has excellent math playlists covering Algebra through Calculus. Clear, efficient worked examples. Students love it for test prep; teachers use it for concise explanations of specific skills.</p>
+        <div class="card-footer">
+          <span class="card-courses">Algebra → AP Calc AB/BC</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,0.6)">Gulliver Schools Mathematics Resource Dashboard</strong><br>
+    Library database access via <a href="https://gulliverschools.libguides.com/az/databases" target="_blank">gulliverschools.libguides.com/az/databases</a> · Login credentials in each database's "Additional Info" tab<br>
+    Covers Algebra I · Algebra II · Geometry · Pre-Calculus · AP Calculus AB · AP Calculus BC · IB Mathematics AA/AI SL/HL<br>
+    <span style="font-size:11px;opacity:0.6">All external links open in a new tab. Contact the Gulliver Library for database access support.</span>
+  </p>
+</footer>
+
+</body>
+</html>
